@@ -27,10 +27,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install ninja-build lld gcc-13 clang-18
-          sudo ln -sf /usr/local/bin/ld /usr/bin/lld
-
+          sudo apt-get install ninja-build
+          if [[ "${{ matrix.compiler }}" == g++-13* ]]; then
+            sudo apt-get install gcc-13
+          elif [[ "${{ matrix.compiler }}" == clang++-18* ]]; then
+            sudo apt-get install clang-18
+          fi
       - name: Configure CMake
         run: |
           cmake .                                         \
